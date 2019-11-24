@@ -4,6 +4,6 @@ setup(
     name="bio",
     version="0.1",
     requires=["pysam"],
-    description="Utilities for biological data",
+    description="algorithm prototypes for biological data",
     packages=find_packages(),
 )
