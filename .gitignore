@@ -1,0 +1,10 @@
+# standard python files
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# virtual environment for project
+ve/
+
+# jupyter notebook checkpoint files
+.ipynb_checkpoints/
