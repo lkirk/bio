@@ -1,5 +1,2 @@
-ipdb==0.12.2
-ipython==7.9.0
-jupyterlab==1.2.3
-nbstripout==0.3.6
-pytest==5.3.0
+pandas==0.25.3
+xarray==0.14.1

@@ -1,0 +1,7 @@
+IPython
+ipdb
+pytest
+jupyterlab
+matplotlib
+statsmodels
+nbstripout

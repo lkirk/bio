@@ -1,33 +1,31 @@
 VE := ve
 PIP := $(VE)/bin/pip
 PYTHON := $(VE)/bin/python
+PRE_REQS := pre_requirements.txt
+REQS_TXT := requirements.txt
+DEV_REQS := dev_requirements.txt
+SCRIPTS := scripts
 
-build: $(VE)
-	$(PYTHON) setup.py build_ext --inplace
+# written in reverse to have install
+# as the default target. more portable
+# than using an extension for this.
+# keep this at the top
+install: _install-requirements
+	 $(PIP) install -e .
 
-test: build
-	$(VE)/bin/py.test -vv --doctest-cython
+# Create a development environment
+dev: install
+	$(PIP) install -r $(DEV_REQS)
+	$(VE)/bin/jupyter labextension install jupyterlab_vim
+
+_install-requirements: $(VE)
+	$(PIP) install -r $(PRE_REQS)
+	$(SCRIPTS)/install-pysam
+	$(PIP) install -r $(REQS_TXT)
+
+clean:
+	rm -rf $(VE)
 
 $(VE):
 	python -m venv $@
 	$(VE)/bin/pip install -U pip setuptools
-
-install-requirements: $(VE)
-	$(PIP) install Cython
-
-install-test-requirements: install-requirements
-	$(PIP) install pytest pytest-cython
-
-install: install-requirements
-	 $(PIP) install -e .
-
-DEVEL-TOOLS := IPython ipdb
-setup-devel: install install-test-requirements
-	$(PIP) install $(DEVEL-TOOLS)
-
-clean:
-	-[ -e $(PYTHON) ] && $(PYTHON) setup.py clean
-	rm -rf $(VE) bio.egg-info build
-	rm -r $$(find . -name __pycache__ -delete) || true
-	rm -f $$(find . -name '*.pyx' | sed -re's/.pyx$$/.c/') || true
-	rm -f $$(find . -name '*.pyx' | sed -re's/.pyx$$/.so/') || true
