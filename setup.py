@@ -6,4 +6,5 @@ setup(
     requires=["pysam"],
     description="algorithm prototypes for biological data",
     packages=find_packages(),
+    entry_points={"console_scripts": ["countreads=bio.countreads:main"],},
 )
