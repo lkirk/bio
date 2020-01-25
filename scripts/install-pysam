@@ -1,0 +1,8 @@
+#!/bin/sh
+# shim for installing pysam on freebsd
+set -e
+if [ ! -h ve/bin/make ]; then
+    ln -s $(which gmake) ve/bin/make
+fi
+. ve/bin/activate
+pip install pysam --global-option=build_ext --global-option='-I/usr/local/include'

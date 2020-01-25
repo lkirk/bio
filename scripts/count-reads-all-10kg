@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+
+INPUT_DIR="$1"
+OUTPUT_DIR="$2"
+CORES=3
+
+mkdir "$OUTPUT_DIR"
+(
+for bin_size in 1_000 10_000 25_000 50_000; do
+        for bam in ${INPUT_DIR}/*/alignment/*.mapped.ILLUMINA.bwa.GBR.low_coverage.*.bam; do
+        sample_id="$(basename $(dirname $(dirname ${bam})))"
+        out_dir="${OUTPUT_DIR}/${sample_id}/${bin_size}"
+        mkdir -p "${out_dir}"
+        out_counts="${out_dir}/readcounts.npz"
+        echo "countreads --in-bam \"${bam}\" --out-npz \"${out_counts}\" --bin-size \"${bin_size}\""
+    done
+done
+) | xargs -P${CORES} -I{} /bin/sh -c '{}'
